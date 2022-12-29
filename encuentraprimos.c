@@ -299,3 +299,19 @@ static void alarmHandler(int signo){
     alarm(INTERVALO_TIMER);
 
 }
+//Variable que comprueba si el numero es primo.
+int Comprobarsiesprimo(long int numero){
+        int x=2;
+
+        if(numero > 2) {
+                for(int y=2; y<=(numero/2); y++) {
+                        if(numero % y == 0) {
+                                 x=0;
+                        }
+                }
+                if(x==2){
+                        x=1;
+                }
+        }
+        return x;
+}
