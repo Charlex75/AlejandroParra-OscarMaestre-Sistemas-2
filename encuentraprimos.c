@@ -315,3 +315,20 @@ int Comprobarsiesprimo(long int numero){
         }
         return x;
 }
+//Variable que cuenta las lineas del fichero primos.txt.
+int ContarLineas(){
+        FILE *fsal;
+        fsal = fopen(NOMBRE_FICH, "r");
+        if(fsal == NULL){
+                printf("Error en la creación del fichero primo.txt\n");
+                return -1;
+        }
+        int contador=0;
+        while(!feof(fsal)){
+                if(fgetc(fsal)=='\n') {
+                contador++;
+                }
+        }
+        fclose(fsal);
+        return contador;
+}
