@@ -68,3 +68,33 @@ int main(int argc, char* argv[]){
     char info[LONGITUD_MSG_ERR];
     FILE *fsal, *fc;
     int numhijos;
+    int final = 0;
+    int comprobar=0;
+    // Control de entrada, después del nombre del script debe figurar el número de hijos y el parámetro verbosity
+                //Abrimos los dos ficheros en w asegurandonos que no se produzcan errores y luego las volbemos a abrir pero esta vez en a.
+                //Hacemos esto para asegurarnos que escriba ficheros en blanco sin el riesgo de que se junte con otro fichero.   
+        fsal = fopen(NOMBRE_FICH, "w");
+        fc = fopen(NOMBRE_FICH_CUENTA, "w+");
+
+        if(fsal == NULL){
+                printf("Error en la creación del fichero primo.txt\n");
+                return -1;
+        }
+    
+        if(fc == NULL){
+                printf("Error en la creación del fichero cuentaprimos.txt\n");
+                return -1;
+        }
+
+        fsal = fopen(NOMBRE_FICH, "a");
+        fc = fopen(NOMBRE_FICH_CUENTA, "a");
+
+        if(fsal == NULL){
+                printf("Error en la creación del fichero primo.txt\n");
+                return -1;
+        }
+    
+        if(fc == NULL){
+                printf("Error en la creación del fichero cuentaprimos.txt\n");
+                return -1;
+        }
