@@ -167,3 +167,14 @@ int main(int argc, char* argv[]){
                                 }
                                 numero++;
                         }
+                        //Se envia el mensaje de que el programa CALCulador esta finalizando.
+                        message.mesg_type = COD_FIN;
+                        comprobar=msgsnd(msgid, &message, sizeof(message), IPC_NOWAIT);
+                        if(comprobar==-1){
+                                perror("Fallo en el CALCulator en el msgsnd() en la parte de COD_FIN");
+                        }
+                        //Termina de finalizar.
+                        exit(0);
+                }
+ 
+
