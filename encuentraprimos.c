@@ -332,3 +332,13 @@ int ContarLineas(){
         fclose(fsal);
         return contador;
 }
+//Variable que imprime por pantalla la jerarquia de procesos.
+void Imprimirjerarquiaproc(int pidraiz, int pidservidor, int *pidhijos, int numhijos){
+        printf("\nRAIZ            SERV            CALC\n%d%16d%16d\n", pidraiz, pidservidor, pidhijos[0]);
+        for(int i = 1; i < numhijos; i++){
+                 printf("                                %d\n",pidhijos[i]);
+        }
+        printf("\n");
+        printf("\n");
+        printf("\n");
+}
