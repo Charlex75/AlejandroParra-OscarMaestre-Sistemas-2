@@ -193,7 +193,7 @@ int main(int argc, char* argv[]){
                                 sscanf(message.mesg_text, "%d", &pid); // Tendrás que guardar esa pid 
                                 pidhijos[i] = pid;
                         }
-                        //Llamamos a la variable Imprimirjerarquiaproc para imprimir la jerarquia de procesos por pantalla.
+                        //Llamamos a la funcion Imprimirjerarquiaproc para imprimir la jerarquia de procesos por pantalla.
                         Imprimirjerarquiaproc(getppid(), pidservidor, pidhijos, numhijos);
                         //Aquí, el programa SERVER se encarga de enviar por mensaje a los procesos CALCulador en que numero en el que deben empezar y el rango que deven recorrer.
                         message.mesg_type = COD_LIMITES;
@@ -206,3 +206,31 @@ int main(int argc, char* argv[]){
                         }
                         //Aquí es donde comienza el temporizador.
                         tstart = time(NULL);
+                        //Este bucle se encarga de recivir los numeros primos de los ALCulador y rellena los dos ficheros con su respectiva información.
+                        while(final < numhijos){
+                                comprobar=msgrcv(msgid, &message, sizeof(message), COD_LIMITES, MSG_EXCEPT);
+                                if(comprobar==-1){
+                                        perror("Fallo en el SERVER en el msgrcv() en la parte de recivir los numeros primos");
+                                }
+                                sscanf(message.mesg_text, "%d %ld", &pidcalc, &numprimrec);
+                                if(message.mesg_type == COD_RESULTADOS){
+                                        if(verbosity > 0){
+                                                 printf("El hijo numero %d encontró el primo %ld\n", pidcalc, numprimrec);
+                                        }
+                                        fprintf(fsal, "%ld\n", numprimrec);
+                                        fclose(fsal);
+                                        fsal = fopen(NOMBRE_FICH, "a");
+                                        intervalo++;
+                                        if(intervalo % 5 == 0){
+                                                fprintf(fc, "%d\n", intervalo);
+                                                fclose(fc);
+                                                fc = fopen(NOMBRE_FICH_CUENTA, "a");
+                                        }
+                                }
+                                else if(message.mesg_type == COD_FIN){
+                                         final++;
+                                }
+                                else{
+                                        printf("El SERVER recibió un mensaje de tipo %ld\n", message.mesg_type);        
+                                }
+                        }
