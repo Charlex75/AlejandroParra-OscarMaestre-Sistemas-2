@@ -98,3 +98,44 @@ int main(int argc, char* argv[]){
                 printf("Error en la creación del fichero cuentaprimos.txt\n");
                 return -1;
         }
+
+        //Establezemos los valores que escribimos en sus respectivas variables.
+        numhijos=strtol(argv[1], NULL, 10);
+        verbosity=strtol(argv[2], NULL, 10);
+
+    pid = fork();       //Creación del SERVER
+    
+    if(pid == 0){       //Rama del hijo de RAIZ (SERVER)
+                pid = getpid();
+                pidservidor = pid;
+                mypid = pidservidor;       
+
+                //Petición de clave para crear la cola
+                if((key = ftok("/tmp", 'C')) == -1){
+                        perror("Fallo al pedir ftok");
+                        exit(1);
+                }
+
+                printf("Server: System V IPC key = %u\n", key);
+
+        //Creación de la cola de mensajería
+                if((msgid = msgget(key, IPC_CREAT | 0666)) == -1){
+                        perror("Fallo al crear la cola de mensajes");
+                        exit(2);
+                }
+
+                printf("Server: Message queue id = %u\n", msgid );
+
+        i = 0;
+
+        //Creación de los procesos CALCuladores
+                while(i < numhijos){
+                        if(pid > 0){ //Solo el SERVER creará hijos
+                                pid = fork(); 
+                                if(pid == 0){   //Rama hijo
+                                        parentpid = getppid();
+                                        mypid = getpid();
+                                } 
+                        }
+                        i++;  //Número de hijos creados
+                }
