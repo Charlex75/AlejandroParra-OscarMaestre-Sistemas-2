@@ -254,3 +254,21 @@ int main(int argc, char* argv[]){
                         exit(0);
                 }
         }
+        //Rama de RAIZ, proceso primigenio
+        else{
+
+                pidraiz = getpid();
+                alarm(INTERVALO_TIMER);
+                signal(SIGALRM, alarmHandler);
+
+                //Espera al final de SERVER
+                wait(NULL);
+                printf("\nEl numero total de primos calculados es %d\n", ContarLineas());
+        }
+
+        fclose(fsal);
+        fclose(fc);
+
+        //El final de todo
+        return 0;
+}
