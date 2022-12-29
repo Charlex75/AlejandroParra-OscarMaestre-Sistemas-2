@@ -206,7 +206,7 @@ int main(int argc, char* argv[]){
                         }
                         //Aquí es donde comienza el temporizador.
                         tstart = time(NULL);
-                        //Este bucle se encarga de recivir los numeros primos de los ALCulador y rellena los dos ficheros con su respectiva información.
+                        //Este bucle se encarga de recivir los numeros primos de los CALCulador y rellena los dos ficheros con su respectiva información.
                         while(final < numhijos){
                                 comprobar=msgrcv(msgid, &message, sizeof(message), COD_LIMITES, MSG_EXCEPT);
                                 if(comprobar==-1){
@@ -234,3 +234,23 @@ int main(int argc, char* argv[]){
                                         printf("El SERVER recibió un mensaje de tipo %ld\n", message.mesg_type);        
                                 }
                         }
+                        //Termina el temporizador y printa el resultado por pantalla.
+                        tend = time(NULL);
+                        printf("\n%.2f segundos es el tiempo que ha tardado\n", difftime(tend, tstart));
+
+                        //Borrado de la cola de mansajeria, muy importante. No olvides cerrar los ficheros
+                        comprobar=msgctl(msgid, IPC_RMID, NULL);
+                        if(comprobar==-1){
+                                perror("Fallo en el SERVER en el msgctl() en la parte de borrado de la cola");
+                        }
+                        else {
+                                printf("\nSe borró la cola de mensajeria\n");
+                        }
+                        fclose(fsal);
+                        fclose(fc);
+                        //Borramos la memora dinámica y terminamos el programa SERVER
+                        free(pidhijos);
+
+                        exit(0);
+                }
+        }
