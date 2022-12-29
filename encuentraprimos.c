@@ -177,3 +177,21 @@ int main(int argc, char* argv[]){
                         exit(0);
                 }
                 
+                //SERVER
+
+                else{
+
+                        //Pide memoria dinámica para crear la lista de pids de los hijos CALCuladores
+                        pidhijos = malloc(sizeof(int) * numhijos);
+
+                        //Recepción de los mensajes COD_ESTOY_AQUI de los hijos
+                        for(i=0; i<numhijos; i++){
+                                comprobar=msgrcv(msgid, &message, sizeof(message), COD_ESTOY_AQUI, 0);
+                                if(comprobar==-1){
+                                        perror("Fallo en el SERVER en el msgrcv() en la parte de recopilacion de los mensajes COD_ESTOY_AQUI");
+                                }
+                                sscanf(message.mesg_text, "%d", &pid); // Tendrás que guardar esa pid 
+                                pidhijos[i] = pid;
+                        }
+                        //Llamamos a la variable Imprimirjerarquiaproc para imprimir la jerarquia de procesos por pantalla.
+                        Imprimirjerarquiaproc(getppid(), pidservidor, pidhijos, numhijos);
