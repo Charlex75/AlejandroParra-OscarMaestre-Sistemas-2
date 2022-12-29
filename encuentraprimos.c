@@ -238,7 +238,7 @@ int main(int argc, char* argv[]){
                         tend = time(NULL);
                         printf("\n%.2f segundos es el tiempo que ha tardado\n", difftime(tend, tstart));
 
-                        //Borrado de la cola de mansajeria, muy importante. No olvides cerrar los ficheros
+                        //Borrado de la cola de mensajeria, muy importante. No olvides cerrar los ficheros
                         comprobar=msgctl(msgid, IPC_RMID, NULL);
                         if(comprobar==-1){
                                 perror("Fallo en el SERVER en el msgctl() en la parte de borrado de la cola");
