@@ -272,3 +272,30 @@ int main(int argc, char* argv[]){
         //El final de todo
         return 0;
 }
+//Manejador de la alarma en el RAIZ
+static void alarmHandler(int signo){
+        int x=1;
+        int y=1;
+        int z=0;
+        FILE *fc;
+         fc = fopen(NOMBRE_FICH_CUENTA, "r");
+
+        if(fc == NULL){
+                printf("Error en la lectura del fichero cuentaprimos.txt\n");
+        }
+
+    
+        while(!feof(fc)){
+                fscanf(fc, "%d", &x);
+                if(x/(5*y)==1){
+                        printf("%d\n", x);
+                        y++;
+                        z=1;
+                }
+        }
+        if(z==1){
+                printf("\n");
+        }
+    alarm(INTERVALO_TIMER);
+
+}
