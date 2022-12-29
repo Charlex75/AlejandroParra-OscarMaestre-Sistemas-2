@@ -139,3 +139,17 @@ int main(int argc, char* argv[]){
                         }
                         i++;  //Número de hijos creados
                 }
+        // AQUI VA LA LOGICA DE NEGOCIO DE CADA CALCulador. 
+                if(mypid != pidservidor){
+                        //Los hijos envian el mensaje de COD_ESTOY_AQUI al padre y también reciven de este mensajes con sus limites y los numeros por lo que tienen que comenzar.
+                        message.mesg_type = COD_ESTOY_AQUI;
+                        sprintf(message.mesg_text, "%d", mypid);
+                        comprobar=msgsnd( msgid, &message, sizeof(message), IPC_NOWAIT);
+                        if(comprobar==-1){
+                                perror("Fallo en el CALCulator en el msgsnd() en la parte de COD_ESTOY_AQUI");
+                        }
+                        comprobar=msgrcv(msgid, &message, sizeof(message), COD_LIMITES, 0);
+                        if(comprobar==-1){
+                                perror("Fallo en el CALCulator en el msgrcv() en la parte de COD_ESTOY_AQUI");
+                        }
+                        sscanf(message.mesg_text, "%ld %d", &numero, &nrango); 
