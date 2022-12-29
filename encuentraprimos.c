@@ -153,3 +153,17 @@ int main(int argc, char* argv[]){
                                 perror("Fallo en el CALCulator en el msgrcv() en la parte de COD_ESTOY_AQUI");
                         }
                         sscanf(message.mesg_text, "%ld %d", &numero, &nrango); 
+
+                        //Este bucle se encarga de invocar a nuestra variable Comprobarsiesprimo para comprobar si el numero en cuestion es primo.
+                        message.mesg_type = COD_RESULTADOS;
+                        for(j=0; j<nrango; j++){ 
+                                if(Comprobarsiesprimo(numero)==1){
+                                        sprintf(message.mesg_text, "%d %ld", mypid, numero);
+                                        comprobar=msgsnd(msgid, &message, sizeof(message), IPC_NOWAIT);
+                                        if(comprobar==-1){
+                                                perror("Fallo en el CALCulator en el msgsnd() en la parte de COD_RESULTADOS");
+                                        }
+
+                                }
+                                numero++;
+                        }
