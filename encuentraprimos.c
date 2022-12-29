@@ -195,3 +195,14 @@ int main(int argc, char* argv[]){
                         }
                         //Llamamos a la variable Imprimirjerarquiaproc para imprimir la jerarquia de procesos por pantalla.
                         Imprimirjerarquiaproc(getppid(), pidservidor, pidhijos, numhijos);
+                        //Aquí, el programa SERVER se encarga de enviar por mensaje a los procesos CALCulador en que numero en el que deben empezar y el rango que deven recorrer.
+                        message.mesg_type = COD_LIMITES;
+                        for(j=0; j<numhijos; j++){
+                                sprintf(message.mesg_text, "%ld %d", (long)(j*RANGO/numhijos)+BASE, RANGO/numhijos); 
+                                comprobar=msgsnd(msgid, &message, sizeof(message), IPC_NOWAIT);
+                                if(comprobar==-1){
+                                        perror("Fallo en el SERVER en el msgsnd() en la parte de COD_LIMITES");
+                                }
+                        }
+                        //Aquí es donde comienza el temporizador.
+                        tstart = time(NULL);
